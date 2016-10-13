@@ -9,3 +9,4 @@ dependencies:
   discord: any
   args:
   yaml:
+  tuple:
