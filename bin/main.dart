@@ -1,5 +1,7 @@
 import 'dart:io' show exit;
+
 import 'package:args/args.dart' show ArgParser;
+
 import 'package:lunabot/src/lunabot.dart' show LunaBot;
 
 main(List<String> args) {

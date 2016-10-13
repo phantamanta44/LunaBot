@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:args/args.dart' show ArgResults;
-import 'package:yaml/yaml.dart';
 import 'package:discord/discord.dart' as discord;
+import 'package:yaml/yaml.dart';
+
 import 'package:lunabot/src/commands.dart' show Commander;
-import 'package:lunabot/src/commandlibrary.dart' as commandlibrary;
+import 'package:lunabot/src/command_library.dart' as commandlibrary;
 
 class LunaBot {
 
