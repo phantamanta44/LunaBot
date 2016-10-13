@@ -1,0 +1,11 @@
+name: lunabot
+version: 1.0.0
+description: A moderately interesting Discord bot.
+author: Phanta <evandalong@gmail.com>
+homepage: http://phanta.xyz
+environment:
+  sdk: '>=1.0.0 <2.0.0'
+dependencies:
+  discord: any
+  args:
+  yaml:
