@@ -15,4 +15,10 @@ Command name = new Command('name')
     return new List.from(args.map((id) => ctx.guild.members.list.firstWhere((member) => member.id == id)).map((member) => '**${member.username}**#${member.discriminator}'));
   });
 
-List<Command> provided = [lsuser, name];
+Command nick = new Command('nick')
+  ..withDescription('Prints the nicknames associated with the passed IDs.')
+  ..withExecutor((List<String> args, Message ctx, LunaBot bot, List<String> stdin) {
+    return new List.from(args.map((id) => ctx.guild.members.list.firstWhere((member) => member.id == id)).map((member) => member.nickname));
+  });
+
+List<Command> provided = [lsuser, name, nick];

@@ -23,6 +23,8 @@ class Commander {
   void acceptEvent(MessageEvent event) {
     if (event.message.content.startsWith(bot.config['prefix'])) {
       try {
+        String source = event.message.guild != null ? event.message.guild.name : 'PM';
+        print('$source / ${event.message.author.username}: ${event.message.content}');
         String result = parse(event.message);
         event.message.channel.sendMessage('__${event.message.author.mention}__\n$result');
       } catch (e) {
