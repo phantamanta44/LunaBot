@@ -24,7 +24,7 @@ class LunaBot {
     config = loadYaml(configFile.readAsStringSync());
     if (token == null)
       token = config['token'];
-    client = new discord.Client(token);
+    client = new discord.Client(token, new discord.ClientOptions(disabledEvents: ['MESSAGE_UPDATE']));
     commandlibrary.register(commands = new Commander(this));
     client.onMessage.listen(commands.acceptEvent);
     print('Bot initialized. Waiting for authentication...');

@@ -28,4 +28,30 @@ Command grep = new Command('grep')
     return stdin..retainWhere(exp.hasMatch);
   });
 
-List<Command> provided = [grep];
+ArgParser truncateParser = new ArgParser()
+  ..addOption('lines', abbr: 'n', defaultsTo: '10');
+Command head = new Command('head')
+  ..withDescription('Truncates the piped data to the first few lines.')
+  ..withExecutor((List<String> args, Message ctx, LunaBot bot, List<String> stdin) {
+    ArgResults parsed = truncateParser.parse(args);
+    int length = int.parse(parsed['lines']);
+    return stdin.sublist(0, length);
+  });
+Command tail = new Command('tail')
+  ..withDescription('Truncates the piped data to the last few lines.')
+  ..withExecutor((List<String> args, Message ctx, LunaBot bot, List<String> stdin) {
+    ArgResults parsed = truncateParser.parse(args);
+    int length = int.parse(parsed['lines']);
+    return stdin.sublist(stdin.length - length, stdin.length);
+  });
+
+ArgParser sortParser = new ArgParser()
+  ..addFlag('reverse', abbr: 'r', defaultsTo: false);
+Command sort = new Command('sort')
+  ..withDescription('Sorts the piped data alphabetically.')
+  ..withExecutor((List<String> args, Message ctx, LunaBot bot, List<String> stdin) {
+    ArgResults parsed = sortParser.parse(args);
+    return stdin..sort(parsed['reverse'] ? (a, b) => b.compareTo(a) : (a, b) => a.compareTo(b));
+  });
+
+List<Command> provided = [grep, head, tail, sort];
