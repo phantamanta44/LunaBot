@@ -24,7 +24,7 @@ class Commander {
     if (event.message.content.startsWith(bot.config['prefix'])) {
       try {
         String result = parse(event.message);
-        event.message.channel.sendMessage('${event.message.author.mention}\n$result');
+        event.message.channel.sendMessage('__${event.message.author.mention}__\n$result');
       } catch (e) {
         event.message.channel.sendMessage('${event.message.author.mention}: $e');
       }
@@ -33,24 +33,24 @@ class Commander {
 
   String parse(Message message) {
     String text = message.content;
-    text = text.substring(bot.config['prefix'].length);
+    text = text.substring(bot.config['prefix'].length).trim();
     List<String> statements = new List();
     int ind = 0,
         prev = 0,
-        prevUnescaped = 0;
-    while ((ind = text.indexOf('|', prev)) != -1) {
+        prevUnescaped = -1;
+    while ((ind = text.indexOf('|', prev + 1)) != -1) {
       if (text[ind - 1] != r'\') {
-        statements.add(text.substring(prevUnescaped, ind));
+        statements.add(text.substring(prevUnescaped + 1, ind).trim());
         prevUnescaped = ind;
       }
       prev = ind;
     }
-    statements.add(text.substring(prevUnescaped));
+    statements.add(text.substring(prevUnescaped + 1).trim());
     List<Tuple3<Command, List<String>, bool>> runSeq = new List();
     for (String statement in statements) {
       bool xargs;
       List<String> parts = statement.split(new RegExp(r'\s'));
-      if (parts.length < 1)
+      if (parts.length < 1 || parts[0].isEmpty)
         throw 'Expected a command but found none!';
       if (xargs = parts[0].startsWith('^'))
         parts[0] = parts[0].substring(1);
