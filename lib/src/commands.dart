@@ -1,5 +1,5 @@
 import 'package:discord/discord.dart';
-import 'package:tuple/tuple.dart' show Tuple2;
+import 'package:tuple/tuple.dart' show Tuple3;
 
 import 'package:lunabot/src/lunabot.dart' show LunaBot;
 
@@ -46,19 +46,25 @@ class Commander {
       prev = ind;
     }
     statements.add(text.substring(prevUnescaped));
-    List<Tuple2<Command, List<String>>> runSeq = new List();
+    List<Tuple3<Command, List<String>, bool>> runSeq = new List();
     for (String statement in statements) {
+      bool xargs;
       List<String> parts = statement.split(new RegExp(r'\s'));
       if (parts.length < 1)
         throw 'Expected a command but found none!';
+      if (xargs = parts[0].startsWith('^'))
+        parts[0] = parts[0].substring(1);
       if (!aliases.containsKey(parts[0]))
         throw 'No such command "${parts[0]}"!';
-      runSeq.add(new Tuple2(commands[aliases[parts[0]]], parts.sublist(1)));
+      runSeq.add(new Tuple3(commands[aliases[parts[0]]], parts.sublist(1), xargs));
     }
     List<String> output;
-    for (Tuple2<Command, List<String>> statement in runSeq) {
+    for (Tuple3<Command, List<String>, bool> statement in runSeq) {
       try {
-        output = statement.item1(statement.item2, message, bot, output);
+        if (statement.item3)
+          output = statement.item1(new List.from(statement.item2)..addAll(output), message, bot, null);
+        else
+          output = statement.item1(statement.item2, message, bot, output);
       } catch (e) {
         throw '${statement.item1.name}: $e';
       }
