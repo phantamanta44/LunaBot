@@ -9,9 +9,11 @@ main(List<String> args) {
     ..addOption('token', abbr: 't')
     ..addOption('config', abbr: 'c');
   LunaBot lunabot = new LunaBot(parser.parse(args));
-  String errorMsg;
-  if ((errorMsg = lunabot.init()) != null) {
-    print(errorMsg);
+  try {
+    lunabot.init();
+  } catch (e) {
+    print('Something went wrong!');
+    print(e);
     exit(1);
   }
 }

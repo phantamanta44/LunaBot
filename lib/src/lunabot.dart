@@ -21,23 +21,19 @@ class LunaBot {
   }
 
   String init() {
-    try {
-      config = loadYaml(configFile.readAsStringSync());
-      if (token == null)
-        token = config['token'];
-      client = new discord.Client(token);
-      commandlibrary.register(commands = new Commander(this));
-      client.onMessage.listen(commands.acceptEvent);
-      print('Bot initialized. Waiting for authentication...');
-      client.onReady.listen((e) {
-        print('Bot authenticated successfully!');
-        print('User: ${client.user.username}#${client.user.discriminator}');
-        print('UUID: ${client.user.id}');
-      });
-      return null;
-    } catch (e) {
-      return e.toString();
-    }
+    config = loadYaml(configFile.readAsStringSync());
+    if (token == null)
+      token = config['token'];
+    client = new discord.Client(token);
+    commandlibrary.register(commands = new Commander(this));
+    client.onMessage.listen(commands.acceptEvent);
+    print('Bot initialized. Waiting for authentication...');
+    client.onReady.listen((e) {
+      print('Bot authenticated successfully!');
+      print('User: ${client.user.username}#${client.user.discriminator}');
+      print('UUID: ${client.user.id}');
+    });
+    return null;
   }
 
 }

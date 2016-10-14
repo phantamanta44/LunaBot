@@ -6,7 +6,10 @@ homepage: http://phanta.xyz
 environment:
   sdk: '>=1.0.0 <2.0.0'
 dependencies:
-  discord: any
+  discord:
+    git:
+      url: git://github.com/Hackzzila/Discord-Dart.git
+      ref: indev
   args:
   yaml:
   tuple:
