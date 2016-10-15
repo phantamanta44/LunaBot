@@ -54,4 +54,20 @@ Command sort = new Command('sort')
     return stdin..sort(parsed['reverse'] ? (a, b) => b.compareTo(a) : (a, b) => a.compareTo(b));
   });
 
-List<Command> provided = [grep, head, tail, sort];
+ArgParser stripParser = new ArgParser()
+  ..addOption('keep-symbol', abbr: 'k', allowMultiple: true);
+Command strip = new Command('strip')
+  ..withDescription('Strips symbols from the piped data.')
+  ..withExecutor((List<String> args, Message ctx, LunaBot bot, List<String> stdin) {
+    ArgResults parsed = stripParser.parse(args);
+    List<String> keep = new List();
+    if (parsed['keep-symbol'] != null) {
+      if (parsed['keep-symbol'].every((s) => s.length == 1))
+        keep = new List.from(parsed['keep-symbol']);
+      else
+        throw 'Invalid keep-symbol specified!';
+    }
+    return stdin.map((s) => s.replaceAllMapped(new RegExp(r'[^0-9a-zA-Z]'), (m) => keep.contains(m.group(0)) ? m.group(0) : ''));
+  });
+
+List<Command> provided = [grep, head, tail, sort, strip];
