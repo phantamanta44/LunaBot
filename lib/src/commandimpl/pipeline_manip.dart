@@ -13,18 +13,16 @@ Command grep = new Command('grep')
   ..withDescription('Filters the piped data with a regexp.')
   ..withExecutor((List<String> args, Message ctx, LunaBot bot, List<String> stdin) {
     ArgResults parsed = grepParser.parse(args);
-    String pattern = parsed['ignore-case'] ? parsed.rest.join(' ').toLowerCase() : parsed.rest.join(' ');
+    String pattern = parsed.rest.join(' ');
     RegExp exp;
     if (parsed['line-regexp'])
-    exp = new RegExp('^$pattern\$');
+      exp = new RegExp('^$pattern\$', caseSensitive: !parsed['ignore-case']);
     else if (parsed['word-regexp'])
-    exp = new RegExp('(?:^|\\s)$pattern(?:\$|\\s)');
+      exp = new RegExp('(?:^|\\s)$pattern(?:\$|\\s)', caseSensitive: !parsed['ignore-case']);
     else
-    exp = new RegExp('.*$pattern.*');
-    if (parsed['ignore-case'])
-    stdin = new List.from(stdin.map((s) => s.toLowerCase()));
+      exp = new RegExp('.*$pattern.*', caseSensitive: !parsed['ignore-case']);
     if (parsed['invert-match'])
-    return stdin..removeWhere(exp.hasMatch);
+      return stdin..removeWhere(exp.hasMatch);
     return stdin..retainWhere(exp.hasMatch);
   });
 
