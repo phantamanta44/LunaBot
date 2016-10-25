@@ -15,7 +15,7 @@ Command widen = new Command('widen')
     for (int i = 0; i < spaceCount; i++)
       spaceBuf..write(' ');
     String spaces = spaceBuf.toString();
-    return stdin.join().replaceAll(new RegExp(r'\s+'), '').runes.join(spaces);
+    return new List.from(stdin.map((s) => s.replaceAll(new RegExp(r'\s+'), '').split('').join(spaces)));
   });
 
 List<Command> provided = [widen];

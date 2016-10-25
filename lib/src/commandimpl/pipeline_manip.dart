@@ -65,7 +65,7 @@ Command strip = new Command('strip')
       else
         throw 'Invalid keep-symbol specified!';
     }
-    return stdin.map((s) => s.replaceAllMapped(new RegExp(r'[^0-9a-zA-Z]'), (m) => keep.contains(m.group(0)) ? m.group(0) : ''));
+    return new List.from(stdin.map((s) => s.replaceAllMapped(new RegExp(r'[^0-9a-zA-Z]'), (m) => keep.contains(m.group(0)) ? m.group(0) : '')));
   });
 
 List<Command> provided = [grep, head, tail, sort, strip];
