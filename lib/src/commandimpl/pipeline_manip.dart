@@ -49,7 +49,7 @@ Command sort = new Command('sort')
   ..withDescription('Sorts the piped data alphabetically.')
   ..withExecutor((List<String> args, Message ctx, LunaBot bot, List<String> stdin) {
     ArgResults parsed = sortParser.parse(args);
-    return stdin..sort(parsed['reverse'] ? (a, b) => b.compareTo(a) : (a, b) => a.compareTo(b));
+    return stdin..sort(parsed['reverse'] ? (a, b) => b.toLowerCase().compareTo(a.toLowerCase()) : (a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
   });
 
 ArgParser stripParser = new ArgParser()
